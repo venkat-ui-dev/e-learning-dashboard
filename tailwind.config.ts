@@ -1,18 +1,20 @@
 import type { Config } from "tailwindcss";
 
-export default {
+const config: Config = {
+  darkMode: "class", // Enable dark mode using the "class" strategy
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+      boxShadow: {
+        'light': '0 4px 6px rgba(0, 0, 0, 0.1)', // Default shadow for light mode
+        'dark': '0 4px 6px rgba(0, 0, 0, 0.4)',  // Custom shadow for dark mode
+        'dark-lg': '0 10px 15px rgba(0, 0, 0, 0.6)', // Stronger shadow for dark mode
       },
     },
   },
   plugins: [],
-} satisfies Config;
+};
+
+export default config;
