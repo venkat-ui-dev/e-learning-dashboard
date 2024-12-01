@@ -71,7 +71,7 @@ export default function UserManagement({ initialUserData }: UserManagementProps)
 
     const handleAddUser = async () => {
         try {
-            const response = await fetch("/api/users", {
+            const response = await fetch(`${process.env.API_URL}/api/users`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(selectedUser),
@@ -88,7 +88,7 @@ export default function UserManagement({ initialUserData }: UserManagementProps)
 
     const handleSaveChanges = async () => {
         try {
-            const response = await fetch("/api/users", {
+            const response = await fetch(`${process.env.API_URL}/api/users`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(selectedUser),
@@ -115,7 +115,7 @@ export default function UserManagement({ initialUserData }: UserManagementProps)
 
     const confirmDelete = async () => {
         try {
-            const response = await fetch(`/api/users?id=${selectedUser?.id}`, {
+            const response = await fetch(`${process.env.API_URL}/api/users?id=${selectedUser?.id}`, {
                 method: "DELETE",
             });
             if (response.ok) {

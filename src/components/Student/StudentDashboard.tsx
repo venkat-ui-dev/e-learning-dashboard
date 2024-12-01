@@ -8,6 +8,7 @@ import { CalendarDaysIcon, ChartBarIcon, TrophyIcon } from "@heroicons/react/24/
 
 export default async function StudentDashboard() {
     try {
+        console.log("API_URL:", process.env.API_URL);
         // Fetch data server-side
         const [dashboardData, initialSessions, initialCourses] = await Promise.all([
             fetch(`${process.env.API_URL}/api/student`, { cache: "no-store" }).then((res) => {

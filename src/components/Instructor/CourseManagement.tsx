@@ -56,7 +56,7 @@ export default function CourseManagement({ initialCourses }: CompleteCourses) {
 
         try {
             const updatedCourse = { ...selectedCourse, name, progress };
-            const response = await fetch(`/api/instructor`, {
+            const response = await fetch(`${process.env.API_URL}/api/instructor`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedCourse),
@@ -81,7 +81,7 @@ export default function CourseManagement({ initialCourses }: CompleteCourses) {
         if (!selectedCourse) return;
 
         try {
-            const response = await fetch(`/api/instructor?id=${selectedCourse.id}`, {
+            const response = await fetch(`${process.env.API_URL}/api/instructor?id=${selectedCourse.id}`, {
                 method: "DELETE",
             });
 
@@ -114,7 +114,7 @@ export default function CourseManagement({ initialCourses }: CompleteCourses) {
 
         try {
             const newCourse = { id: Date.now(), name, progress, students: 0 };
-            const response = await fetch(`/api/instructor`, {
+            const response = await fetch(`${process.env.API_URL}/api/instructor`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(newCourse),
