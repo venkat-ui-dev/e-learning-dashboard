@@ -13,51 +13,51 @@ export default async function StudentDashboard() {
         // Fetching data with caching strategies
         const [dashboardData, initialSessions, initialCourses] = await Promise.all([
             // Dynamic data (refetched on every request)
-            fetch(`/api/student`, { cache: "no-store" }).then((res) => {
+            fetch(`https://dummyjson.com/products`, { cache: "no-store" }).then((res) => {
                 if (!res.ok) throw new Error("Failed to fetch student data");
                 return res.json();
             }),
             // Revalidate every 60 seconds
-            fetch(`/api/upcomingSessions`, {
+            fetch(`https://dummyjson.com/products`, {
                 next: { revalidate: 60 },
             }).then((res) => {
                 if (!res.ok) throw new Error("Failed to fetch upcoming sessions data");
                 return res.json();
             }),
             // Static data with forced caching
-            fetch(`/api/courses`, { cache: "force-cache" }).then((res) => {
+            fetch(`https://dummyjson.com/products`, { cache: "force-cache" }).then((res) => {
                 if (!res.ok) throw new Error("Failed to fetch courses data");
                 return res.json();
             }),
         ]);
 
-        const calculateImprovement = (performance: number[]) => {
-            return performance.map((value, index, arr) => {
-                if (index === 0) return 0;
-                return ((value - arr[index - 1]) / arr[index - 1]) * 100;
-            });
-        };
+        // const calculateImprovement = (performance: number[]) => {
+        //     return performance.map((value, index, arr) => {
+        //         if (index === 0) return 0;
+        //         return ((value - arr[index - 1]) / arr[index - 1]) * 100;
+        //     });
+        // };
 
-        const improvementData = calculateImprovement(dashboardData.performance || [0, 0, 0, 0]);
+        // const improvementData = calculateImprovement(dashboardData.performance || [0, 0, 0, 0]);
 
-        const barChartData = {
-            labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
-            datasets: [
-                {
-                    label: "Improvement (%)",
-                    data: improvementData.map((val) => val.toFixed(2)),
-                    backgroundColor: "rgba(126, 58, 242, 0.8)",
-                    borderColor: "rgba(126, 58, 242, 1)",
-                    borderWidth: 1,
-                },
-            ],
-        };
+        // const barChartData = {
+        //     labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+        //     datasets: [
+        //         {
+        //             label: "Improvement (%)",
+        //             data: improvementData.map((val) => val.toFixed(2)),
+        //             backgroundColor: "rgba(126, 58, 242, 0.8)",
+        //             borderColor: "rgba(126, 58, 242, 1)",
+        //             borderWidth: 1,
+        //         },
+        //     ],
+        // };
 
-        const lineChartData = {
-            labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
-            title: "Weekly Performance Trends",
-            color: "rgba(59, 130, 246, 1)",
-        };
+        // const lineChartData = {
+        //     labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+        //     title: "Weekly Performance Trends",
+        //     color: "rgba(59, 130, 246, 1)",
+        // };
 
         return (
             <div className="p-4 space-y-6" role="main" aria-labelledby="student-dashboard-title">
@@ -111,23 +111,23 @@ export default async function StudentDashboard() {
                             <h3 className="text-lg font-semibold mb-2" tabIndex={0}>
                                 Weekly Improvements Chart
                             </h3>
-                            <BarChart
+                            {/* <BarChart
                                 data={barChartData || [0, 0, 0, 0]}
                                 title="Weekly Improvement (%)"
                                 aria-label="Bar chart displaying weekly improvement percentage"
                                 aria-describedby="Bar chart displaying weekly improvement percentage for the students"
-                            />
+                            /> */}
                         </div>
                         <div>
                             <h3 className="text-lg font-semibold mb-2" tabIndex={0}>
                                 Performance Chart
                             </h3>
-                            <LineChart
+                            {/* <LineChart
                                 data={dashboardData.performance || [0, 0, 0, 0]}
                                 chartConfig={lineChartData}
                                 aria-label="Line chart displaying weekly performance trends"
                                 aria-describedby="Line chart displaying weekly performance trends for the students"
-                            />
+                            /> */}
                         </div>
                     </section>
 
