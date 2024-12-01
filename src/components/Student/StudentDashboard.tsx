@@ -13,19 +13,19 @@ export default async function StudentDashboard() {
         // Fetching data with caching strategies
         const [dashboardData, initialSessions, initialCourses] = await Promise.all([
             // Dynamic data (refetched on every request)
-            fetch(`${process.env.API_URL}/api/student`, { cache: "no-store" }).then((res) => {
+            fetch(`/api/student`, { cache: "no-store" }).then((res) => {
                 if (!res.ok) throw new Error("Failed to fetch student data");
                 return res.json();
             }),
             // Revalidate every 60 seconds
-            fetch(`${process.env.API_URL}/api/upcomingSessions`, {
+            fetch(`/api/upcomingSessions`, {
                 next: { revalidate: 60 },
             }).then((res) => {
                 if (!res.ok) throw new Error("Failed to fetch upcoming sessions data");
                 return res.json();
             }),
             // Static data with forced caching
-            fetch(`${process.env.API_URL}/api/courses`, { cache: "force-cache" }).then((res) => {
+            fetch(`/api/courses`, { cache: "force-cache" }).then((res) => {
                 if (!res.ok) throw new Error("Failed to fetch courses data");
                 return res.json();
             }),
