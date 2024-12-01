@@ -7,6 +7,7 @@ import CourseOverview from "@/components/Student/CourseOverview";
 import { CalendarDaysIcon, ChartBarIcon, TrophyIcon } from "@heroicons/react/24/solid";
 
 export default async function StudentDashboard() {
+    console.log("API_URL:", process.env.API_URL);
     try {
         console.log("API_URL:", process.env.API_URL);
         // Fetch data server-side
