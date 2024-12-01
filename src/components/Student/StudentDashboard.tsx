@@ -6,23 +6,31 @@ import UpcomingSessions from "@/components/Student/UpcomingSessions";
 import CourseOverview from "@/components/Student/CourseOverview";
 import { CalendarDaysIcon, ChartBarIcon, TrophyIcon } from "@heroicons/react/24/solid";
 
-export const dynamic = "force-dynamic"; // Force dynamic rendering for SSR
-
-async function fetchData(endpoint: string) {
-    const res = await fetch(`${process.env.API_URL}${endpoint}`, {
-        cache: "no-store",
-    });
-    if (!res.ok) throw new Error(`Failed to fetch ${endpoint}`);
-    return res.json();
-}
-
 export default async function StudentDashboard() {
     try {
+        console.log("API_URL:", process.env.API_URL);
+
+        // Fetching data with caching strategies
         const [dashboardData, initialSessions, initialCourses] = await Promise.all([
-            fetchData("/api/student"),
-            fetchData("/api/upcomingSessions"),
-            fetchData("/api/courses"),
+            // Dynamic data (refetched on every request)
+            fetch(`${process.env.API_URL}/api/student`, { cache: "no-store" }).then((res) => {
+                if (!res.ok) throw new Error("Failed to fetch student data");
+                return res.json();
+            }),
+            // Revalidate every 60 seconds
+            fetch(`${process.env.API_URL}/api/upcomingSessions`, {
+                next: { revalidate: 60 },
+            }).then((res) => {
+                if (!res.ok) throw new Error("Failed to fetch upcoming sessions data");
+                return res.json();
+            }),
+            // Static data with forced caching
+            fetch(`${process.env.API_URL}/api/courses`, { cache: "force-cache" }).then((res) => {
+                if (!res.ok) throw new Error("Failed to fetch courses data");
+                return res.json();
+            }),
         ]);
+
         const calculateImprovement = (performance: number[]) => {
             return performance.map((value, index, arr) => {
                 if (index === 0) return 0;
@@ -131,9 +139,8 @@ export default async function StudentDashboard() {
                 </div>
             </div>
         );
-        // Render dashboard as before
     } catch (error) {
-        console.error("Error in SSR:", error);
-        return notFound(); // Handle SSR failures
+        console.error("Error in StudentDashboard SSR:", error);
+        return notFound(); // Return 404 page for SSR failures
     }
 }
