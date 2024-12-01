@@ -3,7 +3,7 @@
 A role-based dashboard for Students, Instructors, and Admins to manage courses, track analytics, and manage sessions. Built with **Next.js**, **Redux**, and **TailwindCSS** for a seamless and responsive user experience.
 
 ## 🔗 Live Demo
-**[E-Learning Dashboard](https://your-vercel-app-url.vercel.app/)**
+**[E-Learning Dashboard](https://e-learning-dashboard-pied.vercel.app/)**
 
 ---
 
