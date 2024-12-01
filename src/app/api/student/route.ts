@@ -10,7 +10,7 @@ const studentData = {
 export async function GET() {
     try {
         return NextResponse.json(studentData);
-    } catch (error) {
+    } catch {
         return NextResponse.error();
     }
 }

@@ -67,6 +67,7 @@ export default async function InstructorDashboard() {
             </div>
         );
     } catch (error) {
+        console.log(error)
         return notFound()
     }
 }

@@ -81,6 +81,7 @@ export default function UserManagement({ initialUserData }: UserManagementProps)
             setIsModalOpen(false);
             toast.success("User added successfully");
         } catch (error) {
+            console.log(error)
             toast.error("Failed to add user");
         }
     };
@@ -97,6 +98,7 @@ export default function UserManagement({ initialUserData }: UserManagementProps)
             setIsModalOpen(false);
             toast.success("User updated successfully");
         } catch (error) {
+            console.log(error)
             toast.error("Failed to update user");
         }
     };
@@ -123,6 +125,7 @@ export default function UserManagement({ initialUserData }: UserManagementProps)
                 toast.error("Failed to delete user");
             }
         } catch (error) {
+            console.log(error)
             toast.error("Error deleting user");
         }
         setIsDeleteOpen(false);

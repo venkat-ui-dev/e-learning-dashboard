@@ -83,6 +83,7 @@ export default async function AdminDashboard() {
 
 
     } catch (error) {
+        console.log(error)
         return notFound()
     }
 }

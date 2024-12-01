@@ -46,6 +46,7 @@ export default function Header({ theme, onThemeChange, className }: HeaderProps)
             await router.push(`/dashboard/${newRole}`);
             setRole(newRole);
         } catch (error) {
+            console.log(error)
             toast.error("Error while navigating:");
             setIsProfileOpen(false);
         } finally {
