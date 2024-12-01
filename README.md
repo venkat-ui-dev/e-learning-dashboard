@@ -52,3 +52,50 @@ src/
 ├── styles/
 ├── utils/
 │   ├── commonUtilities.ts
+
+## 🔄 State Management with Redux
+
+This application leverages **Redux Toolkit** for efficient global state management. The following key features are managed:
+
+- **Upcoming Sessions**: Manages student session data.
+- **Courses**: Handles instructor course data.
+- **User Management**: Admin-related user data.
+
+Each feature is modularized with a dedicated slice located in `src/store/features/`.
+
+---
+
+## 📊 Analytics with Charts
+
+The application provides insightful analytics through visualizations using **react-chartjs-2** and **Chart.js**:
+
+- **Bar Chart**: Weekly performance trends for students.
+- **Pie Chart**: Student distribution across instructors.
+- **Line Chart**: Weekly improvement analysis.
+
+---
+
+## 🌍 Deployment
+
+The application is deployed on **Vercel** for seamless hosting and continuous integration:
+
+1. Push your code to a **GitHub repository**.
+2. Connect the repository to **Vercel**.
+3. Ensure the following environment variable is configured in Vercel:
+   - `API_URL` set to `/`.
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License**. Feel free to use, modify, and distribute it as needed.
+
+---
+
+## 📧 Contact
+
+For any questions or assistance, reach out to:
+
+- **Name**: Venkatesh S  
+- **Email**: [techvenkats@gmail.com](mailto:techvenkats@gmail.com)  
+- **GitHub**: [https://github.com/venkat-ui-dev](https://github.com/venkat-ui-dev)  
