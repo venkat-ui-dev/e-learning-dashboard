@@ -1,6 +1,6 @@
 import StudentDashboard from "@/components/Student/StudentDashboard";
 
-export default function InstructorPage() {
+export default function StudentPage() {
     return (
         <StudentDashboard />
     );
