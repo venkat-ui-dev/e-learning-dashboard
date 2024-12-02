@@ -39,7 +39,7 @@ export default function CourseOverview({ initialCourses }: UpcomingSessionsProps
 
     // Pre-calculate progress details for courses
     const coursesWithProgress = useMemo(() => {
-        return courses.map((course) => {
+        return courses?.map((course) => {
             const progressColor =
                 course.progress === 100
                     ? "bg-green-500"
