@@ -6,20 +6,16 @@ import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { toast } from "react-toastify";
 import { Loader } from "@/components/Common/Loader";
 import { UserRole } from "@/types/commonEnums";
+import { useTheme } from "@/context/ThemeContext";
 
-interface HeaderProps {
-    theme: string;
-    onThemeChange: (newTheme: string) => void;
-    className?: string;
-}
-
-export default function Header({ theme, onThemeChange, className }: HeaderProps) {
+export default function Header() {
     const router = useRouter();
     const pathname = usePathname();
     const [role, setRole] = useState<string>(UserRole.student);
     const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const profileRef = useRef<HTMLDivElement>(null);
+    const { theme, setTheme } = useTheme();
 
     useEffect(() => {
         const currentRole = pathname.split("/")[2] || UserRole.student;
@@ -46,7 +42,7 @@ export default function Header({ theme, onThemeChange, className }: HeaderProps)
             await router.push(`/dashboard/${newRole}`);
             setRole(newRole);
         } catch (error) {
-            console.log(error)
+            console.log(error);
             toast.error("Error while navigating:");
             setIsProfileOpen(false);
         } finally {
@@ -57,7 +53,7 @@ export default function Header({ theme, onThemeChange, className }: HeaderProps)
 
     return (
         <header
-            className={`bg-white dark:bg-gray-800 p-4 flex items-center transition-colors duration-300 shadow-md ${className}`}
+            className={`bg-white dark:bg-gray-800 p-4 flex items-center transition-colors duration-300 shadow-md sticky top-0 z-10`}
             aria-label="Header"
         >
             {/* Right Section: Profile and Theme Toggle */}
@@ -72,7 +68,7 @@ export default function Header({ theme, onThemeChange, className }: HeaderProps)
                         ? "from-gray-800 to-black"
                         : "from-blue-300 to-blue-500"
                         } rounded-full cursor-pointer overflow-hidden shadow-md transition-all duration-500`}
-                    onClick={() => onThemeChange(theme === "light" ? "dark" : "light")}
+                    onClick={() => setTheme(theme === "light" ? "dark" : "light")}
                 >
                     {/* Toggle Knob */}
                     <div

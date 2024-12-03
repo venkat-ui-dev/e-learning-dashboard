@@ -1,6 +1,7 @@
 "use client";
 
 import "./globals.css";
+import { ThemeProvider } from "@/context/ThemeContext";
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from "react-redux";
 import { store } from "@/store/store";
@@ -10,7 +11,7 @@ import { useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<string | null>(null);
+  const [theme, setTheme] = useState<string>('light');
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "light";
@@ -35,32 +36,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <title>E-Learning Dashboard</title>
       </head>
       <body className="bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
-        <Provider store={store}>
-          <div className="flex flex-col h-screen md:flex-row">
-            <ToastContainer position="top-right" autoClose={5000} aria-live="assertive" />
-            <Sidebar
-              theme={theme}
-              className="w-full md:w-60 md:h-full md:static fixed h-full z-50 transition-transform duration-300"
-              aria-label="Main navigation sidebar"
-            />
-            <div className="flex flex-col flex-1">
-              <Header
-                onThemeChange={handleThemeChange}
-                theme={theme}
-                className="sticky top-0 z-10"
-                aria-label="Page header with theme toggle"
+        <ThemeProvider>
+          <Provider store={store}>
+            <div className="flex flex-col h-screen md:flex-row">
+              <ToastContainer position="top-right" autoClose={5000} aria-live="assertive" />
+              <Sidebar aria-label="Main navigation sidebar"
               />
-              <main
-                className={`flex-1 p-2 transition-colors duration-300 overflow-y-auto ${theme === "dark" ? "bg-gray-800 text-gray-200" : "bg-white text-gray-800"
-                  }`}
-                role="main"
-                aria-live="polite"
-              >
-                {children}
-              </main>
+              <div className="flex flex-col flex-1">
+                <Header aria-label="Page header with theme toggle"
+                />
+                <main
+                  className={`flex-1 p-2 transition-colors duration-300 overflow-y-auto dark:text-gray-300`}
+                  role="main"
+                  aria-live="polite"
+                >
+                  {children}
+                </main>
+              </div>
             </div>
-          </div>
-        </Provider>
+          </Provider>
+        </ThemeProvider>
       </body>
     </html>
   );

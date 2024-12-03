@@ -2,15 +2,17 @@
 
 import { useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
+import { useTheme } from "@/context/ThemeContext";
 
 interface SidebarProps {
     theme: string;
     className?: string;
 }
 
-export default function Sidebar({ theme, className }: SidebarProps) {
+export default function Sidebar() {
     const [isOpen, setIsOpen] = useState(false);
     const [activeMenu, setActiveMenu] = useState("Dashboard");
+    const { theme } = useTheme();
 
     const buttonColor = theme === "dark" ? "bg-sidebarBgDark text-sidebarTextDark" : "bg-sidebarBgLight text-sidebarTextLight";
 
@@ -30,7 +32,7 @@ export default function Sidebar({ theme, className }: SidebarProps) {
             {/* Sidebar */}
             <aside
                 className={`fixed top-0 h-full w-60 transform transition-transform duration-300 shadow-md z-40 ${isOpen ? "translate-x-0" : "-translate-x-full"
-                    } md:translate-x-0 md:static ${className} ${theme === "dark" ? "bg-sidebarBgDark text-sidebarTextDark" : "bg-sidebarBgLight text-sidebarTextLight"}`}
+                    } md:translate-x-0 md:static w-full md:w-60 md:h-full fixed h-full z-50 transition-transform duration-300 ${theme === "dark" ? "bg-sidebarBgDark text-sidebarTextDark" : "bg-sidebarBgLight text-sidebarTextLight"}`}
                 aria-label="Sidebar navigation"
             >
                 {/* Header */}
