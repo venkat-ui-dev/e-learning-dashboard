@@ -1,0 +1,40 @@
+/* AdminDashboard.module.css */
+
+/* Card styles */
+.card {
+  @apply shadow-lg hover:shadow-xl transition-transform duration-300 transform hover:scale-105;
+}
+
+.card-gradient-pink {
+  @apply bg-gradient-to-r from-pinkish-from via-pinkish-via to-pinkish-to;
+}
+
+.card-gradient-blue {
+  @apply bg-gradient-to-r from-bluish-from via-bluish-via to-bluish-to;
+}
+
+.card-gradient-green {
+  @apply bg-gradient-to-r from-greenish-from via-greenish-via to-greenish-to;
+}
+
+/* Icon styles */
+.icon {
+  @apply text-white rounded-full;
+}
+
+.icon-pink {
+  @apply bg-pink-500;
+}
+
+.icon-blue {
+  @apply bg-blue-600;
+}
+
+.icon-green {
+  @apply bg-green-600;
+}
+
+/* Chart container */
+.chart-container {
+  @apply w-full h-64 sm:h-80 lg:h-96;
+}

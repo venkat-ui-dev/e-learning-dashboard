@@ -6,6 +6,7 @@ import { RootState } from "@/store/store";
 import { setSessions, setLoading } from "@/store/features/upcomingSessionsSlice";
 import { Skelton } from "../Common/Skelton";
 import { formatDate, isNextWeek, isThisWeek } from "@/app/utilities/utilities";
+import styles from './student.module.css';
 
 interface Course {
     id: number;
@@ -25,7 +26,9 @@ export default function UpcomingSessions({ initialSessions }: UpcomingSessionsPr
     const sessions = useSelector((state: RootState) => state.upcomingSessions.sessions);
     const loading = useSelector((state: RootState) => state.upcomingSessions.loading);
 
-    const [activeTab, setActiveTab] = useState<string>("This Week");
+    const [activeTab, setActiveTab] = useState<string>(
+        () => localStorage.getItem("activeTab") || "This Week"
+    );
 
     const filteredSessions = useMemo(() => {
         return initialSessions.filter((session) => {
@@ -37,16 +40,18 @@ export default function UpcomingSessions({ initialSessions }: UpcomingSessionsPr
     }, [sessions, activeTab]);
 
     useEffect(() => {
-        // Simulate loading for a smoother UI experience (optional)
         dispatch(setLoading(true));
 
         if (initialSessions) {
-            dispatch(setSessions(initialSessions)); // Dispatch sessions to Redux
+            dispatch(setSessions(initialSessions));
         }
 
-        // Stop loading after setting sessions
         dispatch(setLoading(false));
     }, [initialSessions, dispatch]);
+
+    useEffect(() => {
+        localStorage.setItem("activeTab", activeTab);
+    }, [activeTab]);
 
     if (loading) {
         return (
@@ -77,9 +82,9 @@ export default function UpcomingSessions({ initialSessions }: UpcomingSessionsPr
                         aria-selected={activeTab === tab}
                         aria-controls={`${tab.replace(" ", "-").toLowerCase()}-sessions`}
                         id={`${tab.replace(" ", "-").toLowerCase()}-tab`}
-                        className={`px-4 py-2 rounded ${activeTab === tab
-                            ? "bg-blue-500 text-white"
-                            : "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-300"
+                        className={`${styles.tab} ${activeTab === tab
+                            ? styles['tab-active']
+                            : 'dark:bg-gray-700 dark:text-gray-300'
                             }`}
                         onClick={() => setActiveTab(tab)}
                     >
@@ -93,44 +98,44 @@ export default function UpcomingSessions({ initialSessions }: UpcomingSessionsPr
                 id={`${activeTab.replace(" ", "-").toLowerCase()}-sessions`}
                 role="tabpanel"
                 aria-labelledby={`${activeTab.replace(" ", "-").toLowerCase()}-tab`}
-                className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                className={`${styles['session-grid']}`}
             >
                 {filteredSessions.length > 0 ? (
                     filteredSessions.map((session) => (
                         <div
                             key={session.id}
-                            className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow transition-all"
+                            className={`${styles['session-card']} dark:bg-gray-800`}
                             role="listitem"
                             aria-labelledby={`session-title-${session.id}`}
                         >
                             <h4
                                 id={`session-title-${session.id}`}
-                                className="font-bold text-lg text-gray-900 dark:text-white"
+                                className={`${styles['session-title']} dark:text-white`}
                                 tabIndex={0}
                             >
                                 {session.title}
                             </h4>
                             <p
-                                className="text-sm text-gray-600 dark:text-gray-400"
+                                className={`${styles['session-text']}`}
                                 aria-label={`Date: ${formatDate(session.date)}`}
                             >
                                 {formatDate(session.date)}
                             </p>
                             <p
-                                className="text-sm text-gray-600 dark:text-gray-400"
+                                className={`${styles['session-text']}`}
                                 aria-label={`Time: ${session.time}`}
                             >
                                 {session.time}
                             </p>
                             <div className="mt-4 flex gap-2">
                                 <button
-                                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                    className={`${styles['button-primary']}`}
                                     aria-label={`Join session: ${session.title}`}
                                 >
                                     Join
                                 </button>
                                 <button
-                                    className="px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-300 rounded hover:bg-gray-300 dark:hover:bg-gray-500"
+                                    className={`${styles['button-secondary']} dark:bg-gray-600 dark:text-gray-300 dark:hover:bg-gray-500`}
                                     aria-label={`Reschedule session: ${session.title}`}
                                 >
                                     Reschedule

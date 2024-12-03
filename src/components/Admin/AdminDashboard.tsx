@@ -7,6 +7,15 @@ import Card from "@/components/Common/Cards";
 import { ChartPieIcon, UserPlusIcon, UsersIcon } from "@heroicons/react/24/solid";
 import { Loader } from "@/components/Common/Loader";
 import { toast } from "react-toastify";
+import styles from "./AdminDashboard.module.css"
+
+
+const chartColors = {
+    green: "rgba(34, 197, 94, 0.8)",
+    blue: "rgba(59, 130, 246, 0.8)",
+    yellow: "rgba(234, 179, 8, 0.8)",
+    red: "rgba(255, 99, 71, 0.8)",
+};
 
 interface EngagementTrend {
     name: string;
@@ -76,11 +85,7 @@ export default function AdminDashboard() {
             {
                 label: "Engagement Trends(%)",
                 data: adminDashboardData?.engagementTrends.map((engagementData) => engagementData.progressValue) || [0, 0, 0],
-                backgroundColor: [
-                    "rgba(34, 197, 94, 0.8)",
-                    "rgba(59, 130, 246, 0.8)",
-                    "rgba(234, 179, 8, 0.8)",
-                ],
+                backgroundColor: [chartColors.green, chartColors.blue, chartColors.red, chartColors.yellow]
             },
         ],
     };
@@ -101,21 +106,21 @@ export default function AdminDashboard() {
                         icon={<UsersIcon className="h-6 w-6" aria-label="Total Users Icon" />}
                         title="Total Users"
                         value={adminDashboardData?.totalUsers || 87}
-                        gradientClasses="bg-gradient-to-r from-pink-50 via-rose-100 to-white dark:from-pink-800 dark:via-rose-700 dark:to-gray-800 shadow-lg hover:shadow-xl transition-transform duration-300 transform hover:scale-105"
+                        gradientClasses={`${styles.card} ${styles['card-gradient-pink']} dark:from-pink-800 dark:via-rose-700 dark:to-gray-800`}
                         iconClasses="bg-pink-500 text-white"
                     />
                     <Card
                         icon={<ChartPieIcon className="h-6 w-6" aria-label="Engagement Rate Icon" />}
                         title="Engagement Rate"
                         value={`${adminDashboardData?.engagementRate || 87}`}
-                        gradientClasses="bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 dark:from-blue-800 dark:via-blue-700 dark:to-blue-800 shadow-lg hover:shadow-xl transition-transform duration-300 transform hover:scale-105"
+                        gradientClasses={`${styles.card} ${styles['card-gradient-blue']} dark:from-blue-800 dark:via-blue-700 dark:to-blue-800`}
                         iconClasses="bg-blue-600 text-white"
                     />
                     <Card
                         icon={<UserPlusIcon className="h-6 w-6" aria-label="New Registrations Icon" />}
                         title="New Registrations"
                         value={adminDashboardData?.newRegistrations || 87}
-                        gradientClasses="bg-gradient-to-r from-green-100 via-green-200 to-green-100 dark:from-green-800 dark:via-green-700 dark:to-green-800 shadow-lg hover:shadow-xl transition-transform duration-300 transform hover:scale-105"
+                        gradientClasses={`${styles.card} ${styles['card-gradient-green']} dark:from-green-800 dark:via-green-700 dark:to-green-800`}
                         iconClasses="bg-green-600 text-white"
                     />
                 </div>

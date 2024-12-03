@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { toast } from "react-toastify";
 import { Loader } from "@/components/Common/Loader";
+import { UserRole } from "@/types/commonEnums";
 
 interface HeaderProps {
     theme: string;
@@ -14,17 +15,16 @@ interface HeaderProps {
 
 export default function Header({ theme, onThemeChange, className }: HeaderProps) {
     const router = useRouter();
-    const pathname = usePathname(); // Get the current pathname
-    const [role, setRole] = useState<string>("student");
+    const pathname = usePathname();
+    const [role, setRole] = useState<string>(UserRole.student);
     const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState<boolean>(false); // Loading state for role change
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const profileRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const currentRole = pathname.split("/")[2] || "student";
+        const currentRole = pathname.split("/")[2] || UserRole.student;
         setRole(currentRole);
 
-        // Close the profile dropdown when clicking outside
         const handleClickOutside = (event: MouseEvent) => {
             if (
                 profileRef.current &&
@@ -42,7 +42,7 @@ export default function Header({ theme, onThemeChange, className }: HeaderProps)
 
     const handleRoleChange = async (newRole: string) => {
         try {
-            setIsLoading(true); // Start loading
+            setIsLoading(true);
             await router.push(`/dashboard/${newRole}`);
             setRole(newRole);
         } catch (error) {
@@ -112,7 +112,7 @@ export default function Header({ theme, onThemeChange, className }: HeaderProps)
                                 className="my-2 border-gray-200 dark:border-gray-600"
                                 aria-hidden="true"
                             />
-                            {["student", "admin", "instructor"].map((r) => (
+                            {[UserRole.student, UserRole.admin, UserRole.instructor].map((r) => (
                                 <li
                                     key={r}
                                     role="menuitem"

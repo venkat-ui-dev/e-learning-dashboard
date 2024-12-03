@@ -7,6 +7,8 @@ import { RootState } from "@/store/store";
 import Modal from "@/components/Common/Modal";
 import { setCourses, addCourse, updateCourse, deleteCourse } from "@/store/features/courseManagementSlice";
 import { toast } from "react-toastify";
+import styles from "./CourseManagement.module.css"
+import CourseForm from "./CourseForm";
 
 interface Course {
     id: number;
@@ -23,9 +25,9 @@ export default function CourseManagement({ initialCourses }: CompleteCourses) {
     const dispatch = useDispatch();
     const courses = useSelector((state: RootState) => state.courseManagement.courses);
 
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [modalType, setModalType] = useState<"add" | "edit">("add");
     const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -34,47 +36,54 @@ export default function CourseManagement({ initialCourses }: CompleteCourses) {
         dispatch(setCourses(initialCourses));
     }, [initialCourses, dispatch]);
 
-    const handleEdit = (course: Course) => {
+    const handleModalOpen = (type: "add" | "edit", course: Course | null = null) => {
+        setModalType(type);
         setSelectedCourse(course);
-        setIsEditModalOpen(true);
+        setIsModalOpen(true);
         setErrorMessage(null);
     };
 
-    const handleEditSubmit = async (event: React.FormEvent) => {
-        event.preventDefault();
-        if (!selectedCourse) return;
-
-        const form = event.target as HTMLFormElement;
-        const name = (form.elements.namedItem("name") as HTMLInputElement).value.trim();
-        const progressValue = (form.elements.namedItem("progress") as HTMLInputElement).value;
-        const progress = parseInt(progressValue, 10);
-
-        if (!name || progressValue === "" || isNaN(progress)) {
-            setErrorMessage("All fields are required.");
-            return;
-        }
-
-        try {
-            const updatedCourse = { ...selectedCourse, name, progress };
-            const response = await fetch(`${process.env.API_URL}/api/instructor`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedCourse),
-            });
-
-            if (!response.ok) {
-                throw new Error("Failed to update course.");
-            }
-
-            dispatch(updateCourse(updatedCourse));
-            toast.success("Course updated successfully!");
-        } catch (error: any) {
-            toast.error(error.message || "Error updating course.");
-        }
-
-        setIsEditModalOpen(false);
+    const handleModalClose = () => {
+        setIsModalOpen(false);
         setSelectedCourse(null);
         setErrorMessage(null);
+    };
+
+    const handleSubmit = async (name: string, progress: number) => {
+        try {
+            if (modalType === "add") {
+                // Add Course Logic
+                const uniqueId = courses.length + 1;
+                const newCourse = { id: uniqueId, name, progress, students: 0 };
+                const response = await fetch(`${process.env.API_URL}/api/instructor`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(newCourse),
+                });
+
+                if (!response.ok) throw new Error("Failed to add course.");
+
+                dispatch(addCourse(newCourse));
+                toast.success("Course added successfully!");
+            } else if (modalType === "edit" && selectedCourse) {
+                // Edit Course Logic
+                const updatedCourse = { ...selectedCourse, name, progress };
+                const response = await fetch(`${process.env.API_URL}/api/instructor?id=${selectedCourse.id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(updatedCourse),
+                });
+
+                if (!response.ok) throw new Error("Failed to update course.");
+
+                dispatch(updateCourse(updatedCourse));
+                toast.success("Course updated successfully!");
+            }
+        } catch (error: any) {
+            toast.error(error.message || "Error processing request.");
+        }
+
+        handleModalClose();
     };
 
     const handleDelete = async () => {
@@ -85,9 +94,7 @@ export default function CourseManagement({ initialCourses }: CompleteCourses) {
                 method: "DELETE",
             });
 
-            if (!response.ok) {
-                throw new Error("Failed to delete course.");
-            }
+            if (!response.ok) throw new Error("Failed to delete course.");
 
             dispatch(deleteCourse(selectedCourse.id));
             toast.success("Course deleted successfully!");
@@ -95,47 +102,8 @@ export default function CourseManagement({ initialCourses }: CompleteCourses) {
             toast.error(error.message || "Error deleting course.");
         }
 
-        setIsDeleteModalOpen(false);
         setSelectedCourse(null);
-    };
-
-    const handleAddSubmit = async (event: React.FormEvent) => {
-        event.preventDefault();
-
-        const form = event.target as HTMLFormElement;
-        const name = (form.elements.namedItem("name") as HTMLInputElement).value.trim();
-        const progressValue = (form.elements.namedItem("progress") as HTMLInputElement).value;
-        const progress = parseInt(progressValue, 10);
-
-        if (!name || progressValue === "" || isNaN(progress)) {
-            setErrorMessage("All fields are required.");
-            return;
-        }
-
-        try {
-            const newCourse = { id: Date.now(), name, progress, students: 0 };
-            const response = await fetch(`${process.env.API_URL}/api/instructor`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(newCourse),
-            });
-
-            if (!response.ok) {
-                throw new Error("Failed to add course.");
-            }
-
-            dispatch(addCourse(newCourse));
-            toast.success("Course added successfully!");
-        } catch (error: any) {
-            toast.error(error.message || "Error adding course.");
-        }
-
-        setIsAddModalOpen(false);
-        setErrorMessage(null);
-    };
-
-    const handleAddNewCourse = () => {
-        setIsAddModalOpen(true);
+        setIsDeleteModalOpen(false);
     };
 
     return (
@@ -146,8 +114,8 @@ export default function CourseManagement({ initialCourses }: CompleteCourses) {
 
             <div className="flex justify-end mb-4">
                 <button
-                    className="px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition"
-                    onClick={handleAddNewCourse}
+                    className={`${styles.btn} ${styles["btn-green"]}`}
+                    onClick={() => handleModalOpen("add")}
                     aria-label="Add new course"
                 >
                     <PlusCircleIcon className="h-5 w-5 inline-block mr-2" />
@@ -164,16 +132,14 @@ export default function CourseManagement({ initialCourses }: CompleteCourses) {
                     courses.map((course) => (
                         <div
                             key={course.id}
-                            className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md flex justify-between items-center mb-2"
+                            className={styles.card + ' dark:bg-gray-800'}
                             tabIndex={0}
                             aria-label={`Course: ${course.name}, Progress: ${course.progress}%`}
                         >
                             <div>
-                                <h3 className="text-sm font-medium text-gray-800 dark:text-gray-200">
-                                    {course.name}
-                                </h3>
+                                <h3 className="text-sm font-medium text-gray-800 dark:text-gray-200">{course.name}</h3>
                                 <div
-                                    className="relative w-32 h-2 bg-gray-300 dark:bg-gray-700 rounded-full mt-2"
+                                    className={`${styles["progress-bar"]} dark:bg-gray-700`}
                                     role="progressbar"
                                     aria-valuenow={course.progress}
                                     aria-valuemin={0}
@@ -181,24 +147,22 @@ export default function CourseManagement({ initialCourses }: CompleteCourses) {
                                     aria-label={`${course.progress}% completed`}
                                 >
                                     <div
-                                        className="absolute h-2 bg-blue-500 rounded-full"
+                                        className={`${styles["progress-fill"]}`}
                                         style={{ width: `${course.progress}%` }}
                                     ></div>
                                 </div>
-                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                    {course.progress}% completed
-                                </p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{course.progress}% completed</p>
                             </div>
                             <div className="flex space-x-4">
                                 <button
-                                    className="px-2 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition"
-                                    onClick={() => handleEdit(course)}
+                                    className={`${styles.btn} ${styles["btn-blue"]}`}
+                                    onClick={() => handleModalOpen("edit", course)}
                                     aria-label={`Edit course ${course.name}`}
                                 >
                                     <PencilSquareIcon className="h-5 w-5" />
                                 </button>
                                 <button
-                                    className="px-2 py-2 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition"
+                                    className={`${styles.btn} ${styles["btn-red"]}`}
                                     onClick={() => {
                                         setSelectedCourse(course);
                                         setIsDeleteModalOpen(true);
@@ -213,45 +177,20 @@ export default function CourseManagement({ initialCourses }: CompleteCourses) {
                 )}
             </section>
 
-            {/* Modals */}
+
+            {/* Reused Modal */}
             <Modal
-                isOpen={isEditModalOpen}
-                onClose={() => {
-                    setIsEditModalOpen(false);
-                    setErrorMessage(null);
-                }}
-                title="Edit Course"
-            >
-                <form onSubmit={handleEditSubmit}>
-                    {errorMessage && (
-                        <p className="text-red-500 text-sm mb-2">{errorMessage}</p>
-                    )}
-                    <label className="block mb-2">
-                        <span className="text-gray-700 dark:text-gray-300">Course Name</span>
-                        <input
-                            type="text"
-                            name="name"
-                            defaultValue={selectedCourse?.name}
-                            className="mt-1 block w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-md"
-                        />
-                    </label>
-                    <label className="block mb-4">
-                        <span className="text-gray-700 dark:text-gray-300">Completion (%)</span>
-                        <input
-                            type="number"
-                            name="progress"
-                            defaultValue={selectedCourse?.progress}
-                            className="mt-1 block w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-md"
-                        />
-                    </label>
-                    <button
-                        type="submit"
-                        className="px-4 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600"
-                        aria-label="Save course changes"
-                    >
-                        Save Changes
-                    </button>
-                </form>
+                isOpen={isModalOpen}
+                onClose={handleModalClose}
+                title={modalType === "add" ? "Add Course" : "Edit Course"}>
+                <CourseForm
+                    defaultValues={modalType === "edit" ? selectedCourse || { name: "", progress: 0 } : { name: "", progress: 0 }}
+                    onSubmit={handleSubmit}
+                    errorMessage={errorMessage}
+                    setErrorMessage={setErrorMessage}
+                    buttonLabel={modalType === "add" ? "Add Course" : "Save Changes"}
+                    buttonClasses={`${styles.btn} ${modalType === "add" ? styles["btn-green"] : styles["btn-blue"]}`}
+                />
             </Modal>
 
             <Modal
@@ -263,14 +202,13 @@ export default function CourseManagement({ initialCourses }: CompleteCourses) {
                 <p>Are you sure you want to delete the course "<b>{selectedCourse?.name}</b>"?</p>
                 <div className="mt-4 flex justify-end space-x-4">
                     <button
-                        className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+                        className={`${styles['modal-footer-btn']} ${styles['btn-gray']}`}
                         onClick={() => setIsDeleteModalOpen(false)}
-                        aria-label="Cancel Deleting Course"
-                    >
+                        aria-label="Cancel Deleting Course">
                         Cancel
                     </button>
                     <button
-                        className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                        className={`${styles['modal-footer-btn']} ${styles['btn-red']}`}
                         onClick={handleDelete}
                         aria-label="Delete Course"
                     >
@@ -279,43 +217,8 @@ export default function CourseManagement({ initialCourses }: CompleteCourses) {
                 </div>
             </Modal>
 
-            <Modal
-                isOpen={isAddModalOpen}
-                onClose={() => {
-                    setIsAddModalOpen(false);
-                    setErrorMessage(null);
-                }}
-                title="Add Course"
-            >
-                <form onSubmit={handleAddSubmit}>
-                    {errorMessage && (
-                        <p className="text-red-500 text-sm mb-2">{errorMessage}</p>
-                    )}
-                    <label className="block mb-2">
-                        <span className="text-gray-700 dark:text-gray-300">Course Name</span>
-                        <input
-                            type="text"
-                            name="name"
-                            className="mt-1 block w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-md"
-                        />
-                    </label>
-                    <label className="block mb-4">
-                        <span className="text-gray-700 dark:text-gray-300">Completion (%)</span>
-                        <input
-                            type="number"
-                            name="progress"
-                            className="mt-1 block w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-md"
-                        />
-                    </label>
-                    <button
-                        type="submit"
-                        className="px-4 py-2 bg-green-500 text-white rounded-md shadow hover:bg-green-600"
-                        aria-label="Add New Course"
-                    >
-                        Add Course
-                    </button>
-                </form>
-            </Modal>
+
         </div>
     );
 }
+

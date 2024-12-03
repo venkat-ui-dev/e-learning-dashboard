@@ -6,6 +6,13 @@ import PieChart from "@/components/Common/PieChart";
 import { Loader } from "../Common/Loader";
 import { toast } from "react-toastify";
 
+const chartColors = {
+    green: "rgba(34, 197, 94, 0.8)",
+    blue: "rgba(59, 130, 246, 0.8)",
+    yellow: "rgba(234, 179, 8, 0.8)",
+    red: "rgba(255, 99, 71, 0.8)",
+};
+
 export default function InstructorDashboard() {
     const [courses, setCourses] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -41,11 +48,7 @@ export default function InstructorDashboard() {
     const chartConfig = {
         labels: courses.map((course) => course.name),
         title: "Student Distribution by Course",
-        colors: [
-            "rgba(34, 197, 94, 0.8)", // Green
-            "rgba(59, 130, 246, 0.8)", // Blue
-            "rgba(234, 179, 8, 0.8)", // Yellow
-        ],
+        colors: [chartColors.green, chartColors.blue, chartColors.yellow, chartColors.red],
     };
 
     const chartData = courses.map((course) => course.students);

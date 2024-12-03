@@ -12,7 +12,7 @@ export default function Sidebar({ theme, className }: SidebarProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [activeMenu, setActiveMenu] = useState("Dashboard");
 
-    const buttonColor = theme === "dark" ? "bg-gray-800 text-gray-300" : "bg-gray-100 text-gray-800";
+    const buttonColor = theme === "dark" ? "bg-sidebarBgDark text-sidebarTextDark" : "bg-sidebarBgLight text-sidebarTextLight";
 
     return (
         <div className="relative">
@@ -30,21 +30,15 @@ export default function Sidebar({ theme, className }: SidebarProps) {
             {/* Sidebar */}
             <aside
                 className={`fixed top-0 h-full w-60 transform transition-transform duration-300 shadow-md z-40 ${isOpen ? "translate-x-0" : "-translate-x-full"
-                    } md:translate-x-0 md:static ${className}`}
-                style={{
-                    backgroundColor: theme === "dark" ? "#1f2937" : "#ffffff",
-                    color: theme === "dark" ? "#d1d5db" : "#1f2937",
-                }}
+                    } md:translate-x-0 md:static ${className} ${theme === "dark" ? "bg-sidebarBgDark text-sidebarTextDark" : "bg-sidebarBgLight text-sidebarTextLight"}`}
                 aria-label="Sidebar navigation"
             >
                 {/* Header */}
                 <div
-                    className="relative p-4 border-b"
-                    style={{ borderColor: theme === "dark" ? "#374151" : "#e5e7eb" }}
+                    className={`${theme === "dark" ? "border-sidebarHoverDark" : "border-sidebarHoverLight"} relative p-4 border-b`}
                 >
                     <h1
                         className="text-lg font-bold"
-                        style={{ color: theme === "dark" ? "#d1d5db" : "#1f2937" }}
                         tabIndex={0}
                     >
                         E-Learning
@@ -68,13 +62,13 @@ export default function Sidebar({ theme, className }: SidebarProps) {
                             aria-current={activeMenu === "Dashboard" ? "page" : undefined}
                             onClick={() => setActiveMenu("Dashboard")}
                             className={`block p-2 pl-4 rounded-md transition-colors duration-200 relative ${theme === "dark"
-                                ? "hover:bg-gray-700 text-gray-300"
-                                : "hover:bg-gray-100 text-gray-800"
+                                ? "hover:bg-sidebarHoverDark text-sidebarTextDark"
+                                : "hover:bg-sidebarHoverLight text-sidebarTextLight"
                                 }`}
                         >
                             {activeMenu === "Dashboard" && (
                                 <span
-                                    className={`absolute left-0 top-0 h-full w-1 rounded-r-md ${theme === "dark" ? "bg-blue-400" : "bg-blue-500"}`}
+                                    className={`absolute left-0 top-0 h-full w-1 rounded-r-md ${theme === "dark" ? "bg-activeIndicatorDark" : "bg-activeIndicatorLight"}`}
                                 ></span>
                             )}
                             Dashboard
@@ -87,8 +81,7 @@ export default function Sidebar({ theme, className }: SidebarProps) {
             {isOpen && (
                 <div
                     aria-hidden="true"
-                    className={`fixed inset-0 z-30 md:hidden ${theme === "dark" ? "bg-black bg-opacity-70" : "bg-black bg-opacity-50"
-                        }`}
+                    className={`fixed inset-0 z-30 md:hidden ${theme === "dark" ? "overlayDark" : "overlayLight"}`}
                     onClick={() => setIsOpen(false)}
                 ></div>
             )}

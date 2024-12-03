@@ -1,0 +1,39 @@
+/* Button Styles */
+.btn {
+  @apply px-4 py-2 text-white rounded-lg shadow transition;
+}
+.btn-green {
+  @apply bg-green-500 hover:bg-green-600;
+}
+.btn-blue {
+  @apply bg-blue-500 hover:bg-blue-600;
+}
+.btn-red {
+  @apply bg-red-500 hover:bg-red-600;
+}
+.btn-gray {
+  @apply bg-gray-500 hover:bg-gray-600;
+}
+
+/* Input Styles */
+.input {
+  @apply mt-1 block w-full px-3 py-2 bg-gray-100 text-gray-800 border border-gray-300 rounded-md;
+}
+
+/* Card Styles */
+.card {
+  @apply p-4 bg-white rounded-lg shadow-md flex justify-between items-center mb-2;
+}
+
+/* Progress Bar */
+.progress-bar {
+  @apply relative w-32 h-2 bg-gray-300 rounded-full mt-2;
+}
+.progress-fill {
+  @apply absolute h-2 bg-blue-500 rounded-full;
+}
+
+/* Modal Footer Buttons */
+.modal-footer-btn {
+  @apply px-4 py-2 text-white rounded-md;
+}

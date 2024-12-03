@@ -1,0 +1,107 @@
+/* UserManagement.module.css */
+
+/* BUTTON STYLES */
+.btn {
+  @apply flex items-center justify-center gap-2 px-4 py-2 text-white font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all;
+}
+
+.btn-primary {
+  @apply bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:from-blue-500 hover:to-blue-700;
+}
+
+.icon-btn-primary {
+  @apply px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600;
+}
+
+.icon-btn-danger {
+  @apply px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 ml-2;
+}
+
+/* INPUT STYLES */
+.input-txt {
+  @apply px-4 py-2 border rounded-md w-full;
+}
+
+.input-txt-inline-icon {
+  @apply absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600;
+}
+
+/* DROPDOWN STYLES */
+.dropdown {
+  @apply px-4 py-2 border rounded-md hover:bg-gray-100 ;
+}
+
+/* TABLE STYLES */
+.table {
+  @apply min-w-full bg-white rounded-lg shadow-md;
+}
+
+.table-row {
+  @apply border-t ;
+}
+
+.table-header {
+  @apply px-4 py-2 text-left;
+}
+
+.table-header-center {
+  @apply px-4 py-2 text-center;
+}
+
+.table-cell {
+  @apply px-4 py-2;
+}
+
+.table-cell-center {
+  @apply px-4 py-2 text-center;
+}
+
+/* PAGINATION */
+.pagination-btn {
+  @apply px-4 py-2 text-sm font-medium rounded-lg shadow;
+}
+
+.pagination-btn-disabled {
+  @apply bg-gray-300 text-gray-500 cursor-not-allowed;
+}
+
+.pagination-btn-active {
+  @apply bg-blue-500 text-white hover:bg-blue-600;
+}
+
+.pagination-container {
+  @apply flex justify-between items-center mt-4 space-x-4;
+}
+
+/* MODAL STYLES */
+.modal-body {
+  @apply mt-4 text-gray-700;
+}
+
+.modal-footer {
+  @apply flex justify-end mt-4 space-x-4;
+}
+
+.modal-footer-btn-cancel {
+  @apply px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400;
+}
+
+.modal-footer-btn-danger {
+  @apply px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600;
+}
+
+.modal-label {
+  @apply block mb-2 text-gray-700;
+}
+
+.modal-input {
+  @apply w-full px-3 py-2 bg-gray-100 border rounded-md;
+}
+
+.modal-select {
+  @apply w-full px-3 py-2 bg-gray-100 border rounded-md;
+}
+
+.modal-button {
+  @apply px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600;
+}

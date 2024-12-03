@@ -5,6 +5,7 @@ import { useEffect, useMemo } from "react";
 import { RootState } from "@/store/store";
 import { setCourses, setLoading } from "@/store/features/courseOverviewSlice";
 import { Skelton } from "@/components/Common/Skelton";
+import styles from './student.module.css';
 
 interface Course {
     id: number;
@@ -42,10 +43,10 @@ export default function CourseOverview({ initialCourses }: UpcomingSessionsProps
         return courses?.map((course) => {
             const progressColor =
                 course.progress === 100
-                    ? "bg-green-500"
+                    ? styles["progress-green"]
                     : course.progress >= 50
-                        ? "bg-yellow-500"
-                        : "bg-red-500";
+                        ? styles["progress-yellow"]
+                        : styles["progress-red"];
 
             const statusText =
                 course.progress === 100
@@ -80,7 +81,7 @@ export default function CourseOverview({ initialCourses }: UpcomingSessionsProps
                 {coursesWithProgress.map((course) => (
                     <div
                         key={course.id}
-                        className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-light dark:shadow-dark transition-all"
+                        className="bg-white rounded-lg p-4 shadow-light transition-all dark:bg-gray-800 dark:shadow-dark"
                         role="listitem"
                         aria-labelledby={`course-name-${course.id}`}
                     >

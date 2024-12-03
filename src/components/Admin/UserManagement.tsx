@@ -12,6 +12,7 @@ import {
 import Modal from "@/components/Common/Modal";
 import { PencilSquareIcon, TrashIcon, UserIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { toast } from "react-toastify";
+import styles from './UserManagement.module.css';
 
 interface Users {
     id: number;
@@ -141,7 +142,7 @@ export default function UserManagement({ initialUserData }: UserManagementProps)
                         setSelectedUser({ id: 0, name: "", role: "", status: "" }); // Default values for a new user
                         setIsModalOpen(true);
                     }}
-                    className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 text-white font-semibold rounded-lg shadow-lg hover:from-blue-500 hover:to-blue-700 transform hover:scale-105 transition-all"
+                    className={`${styles.btn} ${styles['btn-primary']}`}
                     aria-label="Add new user"
                 >
                     <UserIcon className="h-4 w-4" />
@@ -154,13 +155,13 @@ export default function UserManagement({ initialUserData }: UserManagementProps)
                         placeholder="Search by name..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="px-4 py-2 border rounded-md w-full dark:bg-gray-800 dark:text-gray-200"
+                        className={`${styles['input-txt']} dark:bg-gray-800 dark:text-gray-200`}
                         aria-label="Search users by name"
                     />
                     {searchTerm && (
                         <button
                             onClick={() => setSearchTerm("")}
-                            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                            className={`${styles['input-txt-inline-icon']} dark:hover:text-gray-300`}
                             aria-label="Clear search"
                         >
                             <XMarkIcon className="w-6 h-6" />
@@ -174,7 +175,7 @@ export default function UserManagement({ initialUserData }: UserManagementProps)
                         aria-label="Filter by role"
                         value={selectedRole}
                         onChange={(e) => setSelectedRole(e.target.value)}
-                        className="px-4 py-2 border rounded-md dark:bg-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className={`${styles.dropdown} dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700`}
                     >
                         <option value="all">All Roles</option>
                         <option value="student">Student</option>
@@ -184,33 +185,33 @@ export default function UserManagement({ initialUserData }: UserManagementProps)
                 </div>
             </div>
 
-            <table className="min-w-full bg-white dark:bg-gray-800 rounded-lg shadow-md" aria-labelledby="user-management-table">
+            <table className={styles.table + ' dark:bg-gray-800 dark:text-white'} aria-labelledby="user-management-table">
                 <thead>
                     <tr className="bg-gray-100 dark:bg-gray-700">
-                        <th className="px-4 py-2 text-left">Name</th>
-                        <th className="px-4 py-2 text-left">Role</th>
-                        <th className="px-4 py-2 text-left">Status</th>
-                        <th className="px-4 py-2 text-center">Actions</th>
+                        <th className={`${styles['table-header']}`}>Name</th>
+                        <th className={`${styles['table-header']}`}>Role</th>
+                        <th className={`${styles['table-header']}`}>Status</th>
+                        <th className={`${styles['table-header-center']}`}>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {paginatedUsers.map((user) => (
-                        <tr key={user.id} className="border-t dark:border-gray-700">
-                            <td className="px-4 py-2">{user.name}</td>
-                            <td className="px-4 py-2">{user.role}</td>
-                            <td className="px-4 py-2">{user.status}</td>
-                            <td className="px-4 py-2 text-center">
+                        <tr key={user.id} className={`${styles['table-row']} dark:border-gray-700`}>
+                            <td className={`${styles['table-cell']}`}>{user.name}</td>
+                            <td className={`${styles['table-cell']}`}>{user.role}</td>
+                            <td className={`${styles['table-cell']}`}>{user.status}</td>
+                            <td className={`${styles['table-cell-center']}`}>
                                 <button
                                     aria-label="edit user"
                                     onClick={() => handleEdit(user)}
-                                    className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                    className={`${styles['icon-btn-primary']}`}
                                 >
                                     <PencilSquareIcon className="h-5 w-5" />
                                 </button>
                                 <button
                                     aria-label="delete user"
                                     onClick={() => handleDelete(user)}
-                                    className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 ml-2"
+                                    className={`${styles['icon-btn-danger']}`}
                                 >
                                     <TrashIcon className="h-5 w-5" />
                                 </button>
@@ -221,11 +222,11 @@ export default function UserManagement({ initialUserData }: UserManagementProps)
             </table>
 
             {/* Pagination Controls */}
-            <div className="flex justify-between items-center mt-4 space-x-4" aria-labelledby="Pagination for User Management Table">
+            <div className={styles['pagination-container']} aria-labelledby="Pagination for User Management Table">
                 <button
-                    className={`px-4 py-2 text-sm font-medium rounded-lg shadow ${currentPage === 1
-                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
+                    className={`${styles['pagination-btn']} ${currentPage === 1
+                        ? styles['pagination-btn-disabled']
+                        : styles['pagination-btn-active']
                         }`}
                     disabled={currentPage === 1}
                     onClick={handlePrevPage}
@@ -233,14 +234,13 @@ export default function UserManagement({ initialUserData }: UserManagementProps)
                 >
                     Previous
                 </button>
-                <span className="text-gray-700 font-medium" aria-labelledby="Page number">
+                <span className="text-gray-700 font-medium dark:text-white" aria-labelledby="Page number">
                     Page <span className="font-bold">{currentPage}</span> of{" "}
                     <span className="font-bold">{totalPages}</span>
                 </span>
                 <button
-                    className={`px-4 py-2 text-sm font-medium rounded-lg shadow ${currentPage === totalPages
-                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
+                    className={`${styles['pagination-btn']} ${currentPage === totalPages
+                        ? styles['pagination-btn-disabled'] : styles['pagination-btn-active']
                         }`}
                     aria-label="next Page"
                     disabled={currentPage === totalPages}
@@ -267,27 +267,28 @@ export default function UserManagement({ initialUserData }: UserManagementProps)
                         selectedUser?.id ? handleSaveChanges() : handleAddUser();
                     }}
                 >
-                    <label className="block mb-2">
-                        <span className="text-gray-700 dark:text-gray-300">Name</span>
+                    <label className={`${styles['modal-label']} dark:text-gray-300`}>
+                        Name
                         <input
                             type="text"
                             value={selectedUser?.name || ""}
                             onChange={(e) =>
                                 setSelectedUser((prev: any) => ({ ...prev, name: e.target.value }))
                             }
+                            placeholder="Enter Full Name"
                             aria-label="Name"
-                            className="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 border rounded-md"
+                            className={`${styles['modal-input']} dark:bg-gray-700`}
                             required
                         />
                     </label>
-                    <label className="block mb-2">
-                        <span className="text-gray-700 dark:text-gray-300">Role</span>
+                    <label className={`${styles['modal-label']} dark:text-gray-300`}>
+                        Role
                         <select
                             value={selectedUser?.role || ""}
                             onChange={(e) =>
                                 setSelectedUser((prev: any) => ({ ...prev, role: e.target.value }))
                             }
-                            className="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 border rounded-md"
+                            className={`${styles['modal-select']} dark:bg-gray-700`}
                             required
                             aria-label="role selection"
                         >
@@ -297,14 +298,14 @@ export default function UserManagement({ initialUserData }: UserManagementProps)
                             <option value="Admin">Admin</option>
                         </select>
                     </label>
-                    <label className="block mb-4">
-                        <span className="text-gray-700 dark:text-gray-300">Status</span>
+                    <label className={`${styles['modal-label']} dark:text-gray-300`}>
+                        Status
                         <select
                             value={selectedUser?.status || ""}
                             onChange={(e) =>
                                 setSelectedUser((prev: any) => ({ ...prev, status: e.target.value }))
                             }
-                            className="w-full px-3 py-2 bg-gray-100 dark:bg-gray-700 border rounded-md"
+                            className={`${styles['modal-select']} dark:bg-gray-700`}
                             required
                             aria-label="users status"
                         >
@@ -315,7 +316,7 @@ export default function UserManagement({ initialUserData }: UserManagementProps)
                     </label>
                     <button
                         type="submit"
-                        className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                        className={`${styles['modal-button']}`}
                         aria-label="Add or Edit User"
                     >
                         {selectedUser ? "Save Changes" : "Add User"}
@@ -331,17 +332,17 @@ export default function UserManagement({ initialUserData }: UserManagementProps)
                 title="Confirm Delete"
                 aria-labelledby="delete user"
             >
-                <p>Are you sure you want to delete {selectedUser?.name}?</p>
-                <div className="flex justify-end mt-4 space-x-4">
+                <div className={`${styles['modal-body']}dark:text-gray-300`}>Are you sure you want to delete {selectedUser?.name}?</div>
+                <div className={`${styles['modal-footer']}`}>
                     <button
-                        className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400"
+                        className={`${styles['modal-footer-btn-cancel']} dark:bg-gray-700`}
                         onClick={() => setIsDeleteOpen(false)}
                         aria-label="Canceling delete user"
                     >
                         Cancel
                     </button>
                     <button
-                        className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                        className={`${styles['modal-footer-btn-danger']}`}
                         onClick={confirmDelete}
                         aria-label="delete user"
                     >
