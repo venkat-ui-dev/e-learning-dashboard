@@ -132,10 +132,9 @@ export default function UserManagement({ initialUserData }: UserManagementProps)
     };
 
     return (
-        <div id="userManagement">
-            <h2 className="text-lg font-bold" id="user-management-heading">User Management</h2>
+        <div id="userManagement" className="p-4 space-y-2 overflow-hidden">
             {/* Table */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-2">
                 {/* Search Input */}
                 <button
                     onClick={() => {

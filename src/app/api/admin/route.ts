@@ -5,10 +5,10 @@ const adminData = {
     engagementRate: "78%",
     newRegistrations: 32,
     engagementTrends: [
-        { date: "2024-11-01", value: 60 },
-        { date: "2024-11-05", value: 75 },
-        { date: "2024-11-10", value: 78 },
-        { date: "2024-11-15", value: 80 },
+        { name: "React Fundamentals", date: "2024-11-01", progressValue: 60 },
+        { name: "Advanced JS", date: "2024-11-05", progressValue: 75 },
+        { name: "Node JS Advanced", date: "2024-11-10", progressValue: 78 },
+        { name: "UI/UX Basics", date: "2024-11-15", progressValue: 80 },
     ],
 }
 
