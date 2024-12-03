@@ -7,8 +7,8 @@ import { RootState } from "@/store/store";
 import Modal from "@/components/Common/Modal";
 import { setCourses, addCourse, updateCourse, deleteCourse } from "@/store/features/courseManagementSlice";
 import { toast } from "react-toastify";
-import styles from "./CourseManagement.module.css"
-import CourseForm from "./CourseForm";
+import styles from "@/components/Instructor/CourseManagement.module.css"
+import CourseForm from "@/components/Instructor/CourseForm";
 
 interface Course {
     id: number;

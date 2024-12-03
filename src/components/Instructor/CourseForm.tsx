@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./CourseManagement.module.css";
+import styles from "@/components/Instructor/CourseManagement.module.css";
 
 interface CourseFormProps {
     defaultValues?: { name: string; progress: number };

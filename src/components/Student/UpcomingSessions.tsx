@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
 import { RootState } from "@/store/store";
 import { setSessions, setLoading } from "@/store/features/upcomingSessionsSlice";
-import { Skelton } from "../Common/Skelton";
+import { Skelton } from "@/components/Common/Skelton";
 import { formatDate, isNextWeek, isThisWeek } from "@/app/utilities/utilities";
-import styles from './student.module.css';
+import styles from '@/components/Student/Student.module.css';
 
 interface Course {
     id: number;

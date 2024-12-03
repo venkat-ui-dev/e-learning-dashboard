@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import CourseManagement from "@/components/Instructor/CourseManagement";
 import PieChart from "@/components/Common/PieChart";
-import { Loader } from "../Common/Loader";
+import { Loader } from "@/components/Common/Loader";
 import { toast } from "react-toastify";
 
 const chartColors = {

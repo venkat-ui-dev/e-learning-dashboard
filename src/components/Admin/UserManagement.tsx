@@ -12,7 +12,7 @@ import {
 import Modal from "@/components/Common/Modal";
 import { PencilSquareIcon, TrashIcon, UserIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { toast } from "react-toastify";
-import styles from './UserManagement.module.css';
+import styles from '@/components/Admin/UserManagement.module.css';
 
 interface Users {
     id: number;

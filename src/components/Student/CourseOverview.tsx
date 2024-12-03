@@ -5,7 +5,7 @@ import { useEffect, useMemo } from "react";
 import { RootState } from "@/store/store";
 import { setCourses, setLoading } from "@/store/features/courseOverviewSlice";
 import { Skelton } from "@/components/Common/Skelton";
-import styles from './student.module.css';
+import styles from '@/components/Student/Student.module.css';
 
 interface Course {
     id: number;

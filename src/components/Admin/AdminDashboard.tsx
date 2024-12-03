@@ -7,7 +7,7 @@ import Card from "@/components/Common/Cards";
 import { ChartPieIcon, UserPlusIcon, UsersIcon } from "@heroicons/react/24/solid";
 import { Loader } from "@/components/Common/Loader";
 import { toast } from "react-toastify";
-import styles from "./AdminDashboard.module.css"
+import styles from '@/components/Admin/AdminDashboard.module.css';
 
 
 const chartColors = {
